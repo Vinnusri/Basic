@@ -1,0 +1,32 @@
+#include <ESP8266WiFi.h>
+
+// Define GPIO pins
+const int relayPin = 5; // Use the correct GPIO pin for the relay
+const int limitSwitchOpenPin = 4; // Limit switch indicating door is open
+const int limitSwitchClosePin = 14; // Limit switch indicating door is closed
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(relayPin, OUTPUT);
+  pinMode(limitSwitchOpenPin, INPUT_PULLUP);
+  pinMode(limitSwitchClosePin, INPUT_PULLUP);
+
+  // Ensure relay is off at startup (motor off)
+  digitalWrite(relayPin, LOW);
+}
+
+void loop() {
+  // Example logic to open the door if the open limit switch isn't triggered
+  if (digitalRead(limitSwitchOpenPin) == HIGH) {
+    // Activate relay to open the door
+    digitalWrite(relayPin, HIGH);
+    delay(10000); // Run motor for a certain time or until open limit switch is triggered
+    digitalWrite(relayPin, LOW); // Stop the motor
+  }
+
+  // Add similar logic for closing the door
+  // Note: In a real application, you would use WiFi to receive commands to open/close the door
+  // and check the status of limit switches before attempting to move the door.
+
+  delay(1000); // Simple delay to avoid running the loop too fast
+}
